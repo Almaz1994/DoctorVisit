@@ -36,6 +36,8 @@ namespace DoctorVisit
             string lastname;
             string firstname;
             string middlename;
+            string education;
+            string company;
             string diagnose;
             string post;
             string medname;
@@ -49,10 +51,16 @@ namespace DoctorVisit
             Console.WriteLine("Введите отчество врача: ");
             middlename = CheckString(Console.ReadLine());
 
+            Console.WriteLine("Введите ВУЗ, который закончил врач: ");
+            education = CheckString(Console.ReadLine());
+
+            Console.WriteLine("Введите место работы врача: ");
+            company = CheckString(Console.ReadLine());
+
             Console.WriteLine("Введите должность врача: ");
             post = CheckString(Console.ReadLine());
 
-            var doctor = new Doctor(lastname, firstname, middlename, post);
+            var doctor = new Doctor(lastname, firstname, middlename, education, company, post);
 
 
             Console.WriteLine("Введите фамилию пациента: ");
@@ -64,7 +72,13 @@ namespace DoctorVisit
             Console.WriteLine("Введите отчество пациента: ");
             middlename = CheckString(Console.ReadLine());
 
-            var patient = new Patient(lastname, firstname, middlename);
+            Console.WriteLine("Введите ВУЗ, который закончил пациент: ");
+            education = CheckString(Console.ReadLine());
+
+            Console.WriteLine("Введите место работы пациента: ");
+            company = CheckString(Console.ReadLine());
+
+            var patient = new Patient(lastname, firstname, middlename, education, company);
 
             Console.WriteLine("Введите диагноз пациента: ");
             diagnose = CheckString(Console.ReadLine());
@@ -108,8 +122,8 @@ namespace DoctorVisit
             }
             patient.BuyMedication(medications);
 
-            Console.WriteLine($"\nФамилия: {doctor.LastName}\nИмя: {doctor.FirstName}\nОтчество: {doctor.MiddleName}\nДолжность: {doctor.Post}\n");
-            Console.WriteLine($"Фамилия: {patient.LastName}\nИмя: {patient.FirstName}\nОтчество: {patient.MiddleName}\nДиагноз: {patient.GetDiagnose(doctor)}\n");
+            Console.WriteLine($"\nФамилия: {doctor.LastName}\nИмя: {doctor.FirstName}\nОтчество: {doctor.MiddleName}\nВУЗ: {doctor.Education}\nМесто работы: {doctor.Company}\nДолжность: {doctor.Post}\n");
+            Console.WriteLine($"Фамилия: {patient.LastName}\nИмя: {patient.FirstName}\nОтчество: {patient.MiddleName}\nВУЗ: {patient.Education}\nМесто работы: {patient.Company}\nДиагноз: {patient.GetDiagnose(doctor)}\n");
 
             Console.WriteLine("Рецепт врача: ");
             foreach(var item in patient.GetMedication(doctor))
