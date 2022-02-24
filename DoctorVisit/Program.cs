@@ -42,6 +42,10 @@ namespace DoctorVisit
             string post;
             string medname;
 
+            int count = 0;
+            double price = 0.0F;
+            double average = 0.0F;
+
             Console.WriteLine("Введите фамилию врача: ");
             lastname = CheckString(Console.ReadLine());
 
@@ -99,16 +103,16 @@ namespace DoctorVisit
             Console.WriteLine("Введите названия лекарств, их цену и необходимое количество: ");
             List<Medication<double,int>> medications = new List<Medication<double,int>>();
 
-            while((!string.IsNullOrEmpty(CheckCharacters(medname = Console.ReadLine()))) && ((Double.TryParse(Console.ReadLine(), out double price) && (Int32.TryParse(Console.ReadLine(), out int count))) == true))
+            while((!string.IsNullOrEmpty(CheckCharacters(medname = Console.ReadLine()))) && ((Double.TryParse(Console.ReadLine(), out price) && (Int32.TryParse(Console.ReadLine(), out count))) == true))
             {
-                if((price > 0) && (count > 0))
+                if((price > 0) && (count >= 0)) // Специально допускаю возможность указать количество товара нуль для вызова и обработки своего исключения
                     medications.Add(new Medication<double,int>(medname, price, count));
                 else
                 {
                     Console.WriteLine("Цена и количество должны быть только положительными! Попробуйте еще раз!");
                     while(((Double.TryParse(Console.ReadLine(), out price)) && (Int32.TryParse(Console.ReadLine(), out count))) == true)
                     {
-                        if((price > 0) && (count > 0))
+                        if((price > 0) && (count >= 0))
                         {
                             medications.Add(new Medication<double,int>(medname, price, count));
                             break;
@@ -136,9 +140,30 @@ namespace DoctorVisit
             Console.WriteLine("Купленные лекарства: ");
             foreach(var item in patient.BuyMedication(medications))
             {
+                price += Math.Round((item.Price * item.Count), 2);
+
                 Console.WriteLine($"Название лекарства: {item.Name}");
                 Console.WriteLine($"Цена: {item.Price}");
                 Console.WriteLine($"Количество: {item.Count}");
+            }
+
+            try
+            {
+                Console.WriteLine($"Стоимость покупки: {price}");
+                if(count == 0)
+                {
+                    throw new MyOwnException();  //кидаю свое исключение
+                }
+                average = Math.Round((price / count), 2);
+                Console.WriteLine($"Средняя стоимость покупки: {average}");
+            }
+            catch (MyOwnException myex)          //ловлю и обрабатываю свое исключение
+            {
+                Console.WriteLine(myex.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Расчет покупки завершен!");
             }
         }
     }
