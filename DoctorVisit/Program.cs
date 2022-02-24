@@ -83,12 +83,12 @@ namespace DoctorVisit
 
             Console.WriteLine("Покупка: ");
             Console.WriteLine("Введите названия лекарств, их цену и необходимое количество: ");
-            List<Medication> medications = new List<Medication>();
+            List<Medication<double,int>> medications = new List<Medication<double,int>>();
 
             while((!string.IsNullOrEmpty(CheckCharacters(medname = Console.ReadLine()))) && ((Double.TryParse(Console.ReadLine(), out double price) && (Int32.TryParse(Console.ReadLine(), out int count))) == true))
             {
                 if((price > 0) && (count > 0))
-                    medications.Add(new Medication(medname, price, count));
+                    medications.Add(new Medication<double,int>(medname, price, count));
                 else
                 {
                     Console.WriteLine("Цена и количество должны быть только положительными! Попробуйте еще раз!");
@@ -96,7 +96,7 @@ namespace DoctorVisit
                     {
                         if((price > 0) && (count > 0))
                         {
-                            medications.Add(new Medication(medname, price, count));
+                            medications.Add(new Medication<double,int>(medname, price, count));
                             break;
                         }
                         else
