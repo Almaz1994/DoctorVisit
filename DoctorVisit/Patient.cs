@@ -4,6 +4,8 @@ namespace DoctorVisit
 {
     public class Patient: Person, IEducation
     {
+        public delegate void Action<T>(Doctor d);
+        public event Action<Doctor> PatientNotify;
         public string Education { get; set; }
         public string Company { get; set; }
         public string Diagnose { get; set; }
@@ -17,8 +19,14 @@ namespace DoctorVisit
 
         public string GetDiagnose(Doctor d)
         {
+            PatientNotify += Patient_Notify;
+            PatientNotify?.Invoke(d);
             return Diagnose;
-        }           
+        }
+        private void Patient_Notify(Doctor d)
+        {
+            Console.WriteLine("Уведомлен в плане диагноза!");
+        }
         public List<string> GetMedication(Doctor d)
         {
             return Medication;
